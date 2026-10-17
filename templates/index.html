@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PlantCare - Plant Care Tracker</title>
+
+    <!-- Favicon -->
+    <link
+        rel="icon"
+        type="image/png"
+        href="{{ url_for('static', filename='images/fav_icon.png') }}"
+    >
+
+    <!-- Main stylesheet -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+
+<body>
+
+    <!-- =========================
+         Navigation
+    ========================== -->
+    <header class="navbar">
+        <div class="nav-container">
+
+            <a href="/" class="logo">
+                <span class="logo-icon">🌱</span>
+                <span>PlantCare</span>
+            </a>
+
+            <nav class="nav-links">
+                <button class="nav-link active" id="dashboardNav">
+                    Dashboard
+                </button>
+
+                <button class="nav-link" id="rankingsNav">
+                    Rankings
+                </button>
+
+                <button class="nav-link" id="statisticsNav">
+                    Statistics
+                </button>
+            </nav>
+
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                🌙
+            </button>
+
+        </div>
+    </header>
+
+
+    <!-- =========================
+         Main Content
+    ========================== -->
+    <main class="main-container">
+
+        <!-- Welcome Section -->
+        <section class="welcome-section" id="dashboardWelcome">
+
+            <div>
+                <p class="eyebrow">YOUR PLANT SHELF</p>
+
+                
+            <h1>
+                <span id="greetingText">Good morning</span>
+                <span>🌿</span>
+            </h1>
+
+
+                <p class="welcome-text">
+                    Here's what your plants need today.
+                </p>
+            </div>
+
+            <button class="primary-button" id="addPlantButton">
+                <span>+</span>
+                Add Plant
+            </button>
+
+        </section>
+
+
+        <!-- =========================
+             Summary Cards
+        ========================== -->
+        <section class="summary-grid" id="dashboardSummary">
+
+            <div class="summary-card">
+                <div class="summary-icon plant-icon">
+                    🌿
+                </div>
+
+                <div>
+                    <p class="summary-label">Total Plants</p>
+                    <h2 id="totalPlants">0</h2>
+                </div>
+            </div>
+
+
+            <div class="summary-card">
+                <div class="summary-icon overdue-icon">
+                    🔴
+                </div>
+
+                <div>
+                    <p class="summary-label">Overdue</p>
+                    <h2 id="overduePlants">0</h2>
+                </div>
+            </div>
+
+
+            <div class="summary-card">
+                <div class="summary-icon due-icon">
+                    🟡
+                </div>
+
+                <div>
+                    <p class="summary-label">Due Soon</p>
+                    <h2 id="dueSoonPlants">0</h2>
+                </div>
+            </div>
+
+
+            <div class="summary-card">
+                <div class="summary-icon healthy-icon">
+                    🟢
+                </div>
+
+                <div>
+                    <p class="summary-label">Healthy</p>
+                    <h2 id="healthyPlants">0</h2>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             Filters
+        ========================== -->
+        <section class="plants-section" id="dashboardPlants">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>My Plants</h2>
+
+                    <p id="plantCountText">
+                        No plants added yet
+                    </p>
+                </div>
+
+                <div class="filter-tabs">
+
+                    <button class="filter-tab active" data-filter="all">
+                        All
+                    </button>
+
+                    <button class="filter-tab" data-filter="overdue">
+                        Overdue
+                    </button>
+
+                    <button class="filter-tab" data-filter="due">
+                        Due Soon
+                    </button>
+
+                    <button class="filter-tab" data-filter="healthy">
+                        Healthy
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Search -->
+            <div class="search-container">
+
+                <span class="search-icon">
+                    🔍
+                </span>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search your plants..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <div class="sort-controls">
+                <label for="sortSelect">Sort by:</label>
+
+                <select id="sortSelect">
+                    <option value="default">
+                        Default
+                    </option>
+
+                    <option value="name-asc">
+                        Name: A → Z
+                    </option>
+
+                    <option value="name-desc">
+                        Name: Z → A
+                    </option>
+
+                    <option value="next-watering">
+                        Next Watering
+                    </option>
+
+                    <option value="difficulty">
+                        Difficulty
+                    </option>
+                </select>
+            </div>
+
+
+            <!-- Plant Grid -->
+            <div class="plant-grid" id="plantGrid">
+
+                <!-- Empty state will appear here -->
+
+            </div>
+
+        </section>
+
+        <!-- =========================
+             Rankings
+        ========================== -->
+
+        <section
+            class="rankings-section hidden"
+            id="rankingsSection"
+        >
+
+            <div class="rankings-header">
+
+                <div>
+
+                    <p class="eyebrow">
+                        YOUR PLANT COLLECTION
+                    </p>
+
+                    <h1>
+                        Plant Rankings 🌿
+                    </h1>
+
+                    <p class="rankings-description">
+                        See how your plants compare
+                        based on their care requirements.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="rankings-grid"
+                id="rankingsGrid"
+            >
+
+                <!-- Rankings will be generated here -->
+
+            </div>
+
+        </section>
+
+        <!-- =========================
+     Statistics
+        ========================== -->
+
+<section
+    class="statistics-section hidden"
+    id="statisticsSection"
+>
+    <div class="statistics-header">
+        <div>
+            <p class="eyebrow">
+                YOUR PLANT COLLECTION
+            </p>
+
+            <h1>
+                Plant Statistics 📊
+            </h1>
+
+            <p class="statistics-description">
+                View an overview of your plant collection
+                and watering activity.
+            </p>
+        </div>
+    </div>
+
+    <div
+        class="statistics-grid"
+        id="statisticsGrid"
+    >
+        <!-- Statistics will be generated here -->
+    </div>
+
+    <div
+        class="watering-overview"
+        id="wateringOverview"
+    >
+        <!-- Watering activity will be generated here -->
+    </div>
+</section>
+
+    </main>
+
+
+    <!-- =========================
+         Add Plant Modal
+    ========================== -->
+    <div class="modal-overlay hidden" id="plantModal">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <div>
+                    <p class="eyebrow">NEW PLANT</p>
+                    <h2>Add a Plant</h2>
+                </div>
+
+                <button class="modal-close" id="closeModal">
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="plantForm">
+
+                <div class="form-group">
+
+                    <label for="plantName">
+                        Plant Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="plantName"
+                        placeholder="e.g. Monstera"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="plantType">
+                        Plant Type
+                    </label>
+
+                    
+                <select id="plantType" required>
+                    <option value="">Select a plant type</option>
+
+                    <option value="pothos">Pothos</option>
+                    <option value="monstera">Monstera</option>
+                    <option value="snake-plant">Snake Plant</option>
+                    <option value="peace-lily">Peace Lily</option>
+                    <option value="spider-plant">Spider Plant</option>
+                    <option value="calathea">Calathea</option>
+                    <option value="orchid">Orchid</option>
+
+                    <option value="__add_custom__">+ Add New Plant Type</option>
+                </select>
+
+                <button
+                    type="button"
+                    id="managePlantTypesBtn"
+                    class="manage-plant-types-btn"
+                >
+                    <span class="manage-btn-icon">⚙</span>
+                    <span>Manage Custom Types</span>
+                </button>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="lastWatered">
+                            Last Watered
+                        </label>
+
+                        <input
+                            type="date"
+                            id="lastWatered"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="wateringInterval">
+                            Water Every
+                        </label>
+
+                        <div class="input-with-unit">
+
+                            <input
+                                type="number"
+                                id="wateringInterval"
+                                min="1"
+                                required
+                            >
+
+                            <span>days</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="plantLocation">
+                        Location
+                        <span class="optional">
+                            Optional
+                        </span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="plantLocation"
+                        placeholder="e.g. Living room"
+                    >
+
+                </div>
+
+                <div class="form-group">
+                    <label for="plantImage">
+                        Plant Photo
+                        <span class="optional">
+                            Optional
+                        </span>
+                    </label>
+
+                    <div class="plant-image-upload">
+                        <div class="plant-image-preview" id="plantImagePreview">
+                            <span>🌿</span>
+                        </div>
+
+                        <div class="plant-image-upload-content">
+                            <label
+                                for="plantImage"
+                                class="image-upload-button"
+                            >
+                                📷 Choose Photo
+                            </label>
+
+                            <input
+                                type="file"
+                                id="plantImage"
+                                accept="image/*"
+                                hidden
+                            >
+
+                            <p>
+                                Upload a photo of your plant
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <label for="plantNotes">
+                        Notes
+                        <span class="optional">
+                            Optional
+                        </span>
+                    </label>
+
+                    <textarea
+                        id="plantNotes"
+                        rows="3"
+                        placeholder="Anything you want to remember..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="care-preview" id="carePreview">
+
+                    <div>
+                        <span>Difficulty</span>
+                        <strong id="previewDifficulty">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Light</span>
+                        <strong id="previewLight">—</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        id="cancelModal"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Save Plant
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Plant Details Modal -->
+    <div class="modal-overlay hidden" id="detailsModal">
+        <div class="modal details-modal">
+
+            <div class="modal-header">
+            <div class="details-title">
+                <div class="details-plant-image" id="detailsPlantImage">
+                    <span>🌿</span>
+                </div>
+
+                <div>
+                    <p class="eyebrow">PLANT DETAILS</p>
+                    <h2 id="detailsPlantName">Plant Name</h2>
+                    <p class="details-plant-type" id="detailsPlantTypeHeader">
+                        Plant Type
+                    </p>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closeDetailsModal"
+            >
+                &times;
+            </button>
+        </div>
+
+            <div class="details-content">
+
+                <!-- Basic Information -->
+                <div class="details-section">
+                    <h3>🌿 Plant Information</h3>
+
+                    <div class="details-grid">
+
+                        <div class="detail-item">
+                            <span>Type</span>
+                            <strong id="detailsPlantType">—</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span>Difficulty</span>
+                            <strong id="detailsDifficulty">—</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span>Light</span>
+                            <strong id="detailsLight">—</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span>Location</span>
+                            <strong id="detailsLocation">—</strong>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- Watering Information -->
+                <div class="details-section">
+                    <h3>💧 Watering</h3>
+
+                    <div class="details-grid">
+
+                        <div class="detail-item">
+                            <span>Last Watered</span>
+                            <strong id="detailsLastWatered">—</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span>Watering Interval</span>
+                            <strong id="detailsInterval">—</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span>Next Watering</span>
+                            <strong id="detailsNextWatering">—</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span>Status</span>
+                            <strong id="detailsStatus">—</strong>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- Notes -->
+                <div class="details-section" id="detailsNotesSection">
+                    <h3>📝 Notes</h3>
+
+                    <p id="detailsNotes">No notes added.</p>
+                </div>
+
+
+                <!-- Watering History -->
+                <div class="details-section">
+                    <h3>💧 Watering History</h3>
+
+                    <div id="wateringHistoryList">
+                        <p class="empty-history">
+                            No watering history yet.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="details-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="detailsEditButton"
+                >
+                    ✏️ Edit Plant
+                </button>
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    id="detailsWaterButton"
+                >
+                    💧 Water Plant
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- =========================
+         Toast Notification
+    ========================== -->
+    <div class="toast hidden" id="toast">
+        <span id="toastIcon">✓</span>
+        <span id="toastMessage">Success</span>
+    </div>
+
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+
+</html>
